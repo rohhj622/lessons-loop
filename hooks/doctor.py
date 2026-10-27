@@ -68,7 +68,7 @@ def collect():
                     "정상이다 — 새 세션의 훅 출력으로 확인하거나, "
                     "LESSONS_VAULT=<경로> 를 주고 다시 돌린다.")
         else:
-            hint = "/claude-lessons-loop:configure 로 설정한다."
+            hint = "/lessons-loop:configure 로 설정한다."
         rows.append(_row("기록 폴더", raw or "(설정 없음)", False, hint))
 
     idx_md = os.path.join(paths.VAULT, "Lessons", "INDEX.md") if paths.VAULT else ""

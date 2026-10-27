@@ -30,8 +30,8 @@ IMPACT = "high"
 # tagscan.py 는 별도 훅이라 이 값과 무관하게 돈다.
 INJECT = str(option("inject_on_start", "true")).strip().lower() not in ("false", "0", "no", "off")
 
-UNCONFIGURED = ("claude-lessons-loop: 기록 폴더가 설정되지 않아 교훈 회수가 꺼져 "
-                "있다. /claude-lessons-loop:configure 로 설정한다.")
+UNCONFIGURED = ("lessons-loop: 기록 폴더가 설정되지 않아 교훈 회수가 꺼져 "
+                "있다. /lessons-loop:configure 로 설정한다.")
 
 
 def main():

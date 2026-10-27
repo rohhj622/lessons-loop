@@ -142,7 +142,7 @@ _CONFIG_CACHE = None
 # CLAUDE_PLUGIN_DATA 에서 계산하므로, 그 변수가 없으면 "환경변수가 없는 곳을 위한
 # 셋째 자리"가 도리어 환경변수를 요구하는 순환이 된다. 훅 밖(셸·CI·doctor 직접
 # 실행)에서 설정이 통째로 안 보이던 원인이 이것이었다. 그래서 관례 위치를 찾는다.
-_DATA_GLOB = "/.claude/plugins/data/*claude-lessons-loop*"
+_DATA_GLOB = "/.claude/plugins/data/*lessons-loop*"
 
 
 def _fallback_data_dirs():

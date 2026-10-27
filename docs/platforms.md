@@ -70,7 +70,7 @@ Codex CLI 0.153.4, macOS 26.6, Apple Silicon.
 
 ```
 codex plugin marketplace add <이 저장소 경로>
-codex plugin add claude-lessons-loop@claude-lessons-loop
+codex plugin add lessons-loop@lessons-loop
 ```
 
 확인한 것.
@@ -171,7 +171,7 @@ Windows 스토어의 `python3` 대체 실행 파일은 `command -v` 에 잡히�
 다섯 다 0 그대로다.
 
 ```
-claude-lessons-loop: 파이썬 3 을 못 찾아 교훈 회수가 통째로 꺼져 있다.
+lessons-loop: 파이썬 3 을 못 찾아 교훈 회수가 통째로 꺼져 있다.
   확인: python3 --version
   없으면 설치하거나, 있는데 못 찾는 것이면 PATH 를 확인한다.
 ```

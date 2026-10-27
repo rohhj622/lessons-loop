@@ -22,7 +22,7 @@ export PYTHONIOENCODING=utf-8
 # 자산은 시험이 직접 만든다. 전에는 만든 사람의 임시 폴더에 손으로 놓여 있었고,
 # 그 세션이 끝나면서 사라져 아무 기계에서도 못 도는 시험이 됐다.
 # 이 폴더는 시험 소유다 — 매번 지우고 다시 만든다.
-SP=${LESSONS_TEST_FIXTURES:-${TMPDIR:-/tmp}/claude-lessons-loop-fixtures}
+SP=${LESSONS_TEST_FIXTURES:-${TMPDIR:-/tmp}/lessons-loop-fixtures}
 "$PY" tests-fixtures.py "$SP" >/dev/null || {
   echo "시험 자산을 만들지 못했다: $SP" >&2; exit 2; }
 

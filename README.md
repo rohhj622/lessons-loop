@@ -1,4 +1,4 @@
-# claude-lessons-loop
+# lessons-loop
 
 세션이 끝나면 그 세션의 맥락은 사라진다. 지난주에 틀린 방식으로 이번 주에 다시 틀린다.
 
@@ -21,8 +21,8 @@
 **Claude Code**
 
 ```
-/plugin marketplace add rohhj622/claude-lessons-loop
-/plugin install claude-lessons-loop@claude-lessons-loop
+/plugin marketplace add rohhj622/lessons-loop
+/plugin install lessons-loop@lessons-loop
 ```
 
 플러그인을 켜면 **기록 폴더 경로를 묻는다.** 그 하나만 정하면 된다.
@@ -30,18 +30,30 @@
 **Codex**
 
 ```
-codex plugin marketplace add rohhj622/claude-lessons-loop
-codex plugin add claude-lessons-loop@claude-lessons-loop
+codex plugin marketplace add rohhj622/lessons-loop
+codex plugin add lessons-loop@lessons-loop
 ```
 
 Codex 는 훅마다 신뢰를 승인받는다. 처음 붙일 때 한 번 승인하면 되고,
 **훅 파일이 바뀌면 다시 묻는다.** Codex 에는 켤 때 묻는 화면이 없으므로
 기록 폴더는 아래 설정 절차로 정한다.
 
+**0.1.12 까지는 이름이 `claude-lessons-loop` 였다.** Claude Code 2.1.311 부터 `claude-` 로 시작하는
+플러그인 이름을 Anthropic 예약어로 거부해서(`plugin validate --strict`), 0.1.13 에서 `lessons-loop` 로 바꿨다.
+옛 이름으로 설치한 사람은 마켓플레이스를 지우고 새 이름으로 다시 더한다. 설정값(`pluginConfigs`)의
+키도 `lessons-loop@lessons-loop` 로 옮긴다. 기록 폴더 안의 교훈은 그대로다.
+
+```
+/plugin uninstall claude-lessons-loop@claude-lessons-loop
+/plugin marketplace remove claude-lessons-loop
+/plugin marketplace add rohhj622/lessons-loop
+/plugin install lessons-loop@lessons-loop
+```
+
 양쪽 다 그다음은 설정 스킬이 물어 가며 채운다.
 
 ```
-/claude-lessons-loop:configure
+/lessons-loop:configure
 ```
 
 이 스킬은 상태를 먼저 보여 주고, 빠진 것마다 승인을 받아 채운다. 이미 있는 파일은
@@ -201,8 +213,8 @@ python "$LESSONS_VAULT/_Meta/lint.py" --selftest
 
 ### 스킬 둘 (`skills/`)
 
-- `/claude-lessons-loop:configure` — 설정과 점검. 승인 없이 아무것도 고치지 않는다.
-- `/claude-lessons-loop:wrap` — 세션 마무리. 계획한 일과 실제 한 일을 갈라 적게 하고,
+- `/lessons-loop:configure` — 설정과 점검. 승인 없이 아무것도 고치지 않는다.
+- `/lessons-loop:wrap` — 세션 마무리. 계획한 일과 실제 한 일을 갈라 적게 하고,
   **교훈 후보는 사람 승인 뒤에만 파일로 만든다.** 승인 단계를 뺐더니 겪지도 않은
   일이 교훈으로 적히는 일이 있었다.
 

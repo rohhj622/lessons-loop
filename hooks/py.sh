@@ -33,7 +33,7 @@ for c in python3 python; do
 done
 if [ -z "$PY" ]; then
     if [ "$QUIET" = "0" ]; then
-        echo "claude-lessons-loop: 파이썬 3 을 못 찾아 교훈 회수가 통째로 꺼져 있다."
+        echo "lessons-loop: 파이썬 3 을 못 찾아 교훈 회수가 통째로 꺼져 있다."
         echo "  확인: python3 --version"
         echo "  없으면 설치하거나, 있는데 못 찾는 것이면 PATH 를 확인한다."
     fi

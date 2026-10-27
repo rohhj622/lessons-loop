@@ -1,6 +1,6 @@
 ---
 name: configure
-description: claude-lessons-loop 설정 — 기록 폴더를 만들고 검색을 붙인다. 설치 직후, 교훈이 안 붙을 때, 또는 지금 설정이 어떤 상태인지 보고 싶을 때 쓴다.
+description: lessons-loop 설정 — 기록 폴더를 만들고 검색을 붙인다. 설치 직후, 교훈이 안 붙을 때, 또는 지금 설정이 어떤 상태인지 보고 싶을 때 쓴다.
 user-invocable: true
 allowed-tools:
   - Read
@@ -13,7 +13,7 @@ allowed-tools:
   - Bash(qmd status*)
 ---
 
-# /claude-lessons-loop:configure — 설정과 점검
+# /lessons-loop:configure — 설정과 점검
 
 이 스킬은 **상태를 먼저 보고하고, 빠진 것마다 사용자에게 물어서 채운다.**
 승인 없이 파일을 만들거나 고치지 않는다. 이미 있는 것은 덮지 않는다.
@@ -173,7 +173,7 @@ qmd update && qmd embed
 상태에 따라 딱 하나만 말한다.
 
 - 기록 폴더가 아직 없다 → 플러그인 설정에서 경로를 넣으라고.
-- 폴더는 됐고 교훈이 없다 → 세션을 마칠 때 `/claude-lessons-loop:wrap` 을
+- 폴더는 됐고 교훈이 없다 → 세션을 마칠 때 `/lessons-loop:wrap` 을
   돌리면 첫 교훈이 생긴다고.
 - 교훈은 있는데 색인이 없다 → `qmd update && qmd embed` 를 한 번 돌리라고.
 - 전부 됐다 → 새 세션을 열면 상시 교훈이 붙는다고. **지금 세션에는 안 붙는다**,

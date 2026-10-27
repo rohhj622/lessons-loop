@@ -31,7 +31,7 @@ if not errorlevel 1 set "PY=python"
 if defined PY goto :run
 
 if "%QUIET%"=="0" (
-  echo claude-lessons-loop: 파이썬 3 을 못 찾아 교훈 회수가 통째로 꺼져 있다.
+  echo lessons-loop: 파이썬 3 을 못 찾아 교훈 회수가 통째로 꺼져 있다.
   echo   확인: python --version
   echo   없으면 설치하거나, 있는데 못 찾는 것이면 PATH 를 확인한다.
 )
