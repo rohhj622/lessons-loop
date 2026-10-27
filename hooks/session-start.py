@@ -25,12 +25,18 @@ from paths import VAULT, option  # noqa: E402
 
 GROUP = option("index_group", "검증·판단 방법론")
 IMPACT = "high"
+# false 면 세션 시작 주입을 통째로 끈다. 플러그인을 끄면 /wrap 까지 사라져서,
+# 주입만 끌 길이 없었다(ISS-026-2026-09-28-001). 같은 SessionStart 의
+# tagscan.py 는 별도 훅이라 이 값과 무관하게 돈다.
+INJECT = str(option("inject_on_start", "true")).strip().lower() not in ("false", "0", "no", "off")
 
 UNCONFIGURED = ("claude-lessons-loop: 기록 폴더가 설정되지 않아 교훈 회수가 꺼져 "
                 "있다. /claude-lessons-loop:configure 로 설정한다.")
 
 
 def main():
+    if not INJECT:
+        return          # 끈 것은 설정이 말해 준다. 매 세션 "꺼져 있다" 고 찍지 않는다
     if not VAULT:
         # 설정을 안 한 사람의 작업을 막지 않는다. 다만 꺼져 있다는 사실은 알린다 —
         # 이 플러그인은 안 돌아도 화면이 똑같아서, 침묵하면 몇 주를 모르고 쓴다.

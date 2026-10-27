@@ -69,6 +69,11 @@ chk "짧은 현황 발화에도 실측 의무" "$(QMD_BIN=/없음 sh hooks/py.sh
 # 검색기가 예외를 던져도 문구는 나가야 한다. 훅 트리 사본에서 search.py 만 깨뒀다.
 chk "검색 실패해도 실측 의무"  "$(QMD_BIN=/없음 sh "$SP/brokenhooks/py.sh" --quiet lesson-recall.py < "$SP/q4.json" | grep -c '⚑')" "1"
 chk "live_gate 끄면 침묵"    "$(CLAUDE_PLUGIN_OPTION_LIVE_GATE=false QMD_BIN=/없음 sh hooks/py.sh --quiet lesson-recall.py < "$SP/q4.json" | grep -c '⚑')" "0"
+# max_hits 0 이면 검색을 부르지 않아야 한다. 깨진 search.py 사본에서 돌려서,
+# 검색이 불렸다면 나왔을 "검색이 실패했다" 줄이 없는 것으로 안 불렸음을 증명한다.
+chk "max_hits 0 이면 검색 안 부름" "$(CLAUDE_PLUGIN_OPTION_MAX_HITS=0 QMD_BIN=/없음 sh "$SP/brokenhooks/py.sh" --quiet lesson-recall.py < "$SP/q.json" | wc -l | tr -d ' ')" "0"
+chk "max_hits 0 에도 실측 의무" "$(CLAUDE_PLUGIN_OPTION_MAX_HITS=0 QMD_BIN=/없음 sh "$SP/brokenhooks/py.sh" --quiet lesson-recall.py < "$SP/q4.json" | grep -c '⚑')" "1"
+chk "inject_on_start false 면 침묵" "$(CLAUDE_PLUGIN_OPTION_INJECT_ON_START=false sh hooks/py.sh session-start.py | wc -l | tr -d ' ')" "0"
 chk "무관 발화 침묵"     "$(QMD_BIN=/없음 sh hooks/py.sh --quiet lesson-recall.py < "$SP/q2.json" | wc -l | tr -d ' ')" "0"
 if [ -f "$QMD_INDEX" ]; then
   chk "점검기 MISSING 0"  "$(sh hooks/py.sh doctor.py | grep -c MISSING)" "0"

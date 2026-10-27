@@ -126,14 +126,30 @@ class QmdFailed(Exception):
 # 한 줄과 같다 — 임베딩 한 번이 그 시간의 대부분이라 lex 는 묻힌다.
 _TYPED_PREFIXES = ("lex: ", "vec: ")
 
+# 발화를 이 길이에서 자른다. 질의는 명령줄 인자로 넘어가는데, 두 줄에 발화가
+# 두 번 실리므로 긴 붙여넣기는 Windows 의 인자 길이 한도에 걸려 WinError 206
+# 으로 죽었다(2026-10-27, 최근 2주 세션 기록에서 11건). 2,000자면 두 줄 합쳐
+# 4,000자라 한도(약 32,000자)와 멀고, 의미검색에는 앞부분만으로 충분하다.
+MAX_QUERY_CHARS = 2000
+
 
 def _as_typed_query(query):
     """질의를 qmd 의 타입 지정 질의서로 만든다. lex 와 vec 두 줄이다.
 
     문법이 **한 줄에 따옴표가 짝을 이룰 것**을 요구한다. 발화는 여러 줄이고
     따옴표가 홀수로 남기도 해서, 개행은 공백으로 접고 큰따옴표는 뺀다.
+
+    **낱말 앞의 `-` 도 뺀다.** qmd 는 `-낱말` 을 제외 문법으로 읽는데, `vec:`
+    줄에서는 그 문법을 거부하고 종료코드 1 로 죽는다("Negation (-term) is not
+    supported in vec/hyde queries"). 발화에는 `-4일`·`--rm`·`-h` 같은 낱말이
+    흔하고 붙여넣은 터미널 출력에는 거의 항상 있어서, 최근 2주 세션의 약 25%
+    에서 회수가 기본 검색기로 떨어지고 있었다(2026-10-27 실측, 실패 발화 61건
+    전부 이 원인. 동시 실행·MCP 서버 충돌은 16회 대조에서 재현되지 않았다).
+    `lex:` 줄에서도 제외 문법은 의도한 것이 아니므로 같이 뺀다.
     """
-    one_line = " ".join(query.split()).replace('"', " ")
+    one_line = " ".join(query.split()).replace('"', " ")[:MAX_QUERY_CHARS]
+    words = [w.lstrip("-") for w in one_line.split()]
+    one_line = " ".join(w for w in words if w)
     return "\n".join(p + one_line for p in _TYPED_PREFIXES)
 
 
@@ -197,13 +213,19 @@ def selftest():
         ("보통 발화", "ageco 진행상황 어떻게 되지?"),
         ("여러 줄", "앞줄" + chr(10) + "뒷줄"),
         ('따옴표 홀수', '이건 "반쪽 따옴표 질의'),
+        ("제외 문법 낱말", "초발일 -4일 전부터 docker run --rm -i -h 계산"),
+        ("긴 붙여넣기", "가나다라 " * 1000),
     ]
     for label, q in cases:
         t = _as_typed_query(q)
         lines = t.splitlines()
         good = (len(lines) == 2
                 and lines[0].startswith("lex: ") and lines[1].startswith("vec: ")
-                and '"' not in t)
+                and '"' not in t
+                # 낱말 앞 `-` 가 남으면 vec 줄에서 qmd 가 죽는다
+                and not any(w.startswith("-") for w in t.split())
+                # 두 줄 합쳐 한도의 두 배를 넘지 않는다
+                and all(len(l) <= MAX_QUERY_CHARS + len("vec: ") for l in lines))
         ok = ok and good
         print("%s  %s" % ("OK " if good else "실패", label))
     return 0 if ok else 1

@@ -1,2 +1,4 @@
 # cmd 는 LF 줄바꿈에서 한글 주석을 명령으로 읽는다 (docs/platforms.md).
 *.cmd text eol=crlf
+# sh 는 CRLF 면 WSL 에서 `cd "$R"` 가 "\r" 붙은 경로로 죽는다 (2026-10-27, tests-regress.sh).
+*.sh text eol=lf
